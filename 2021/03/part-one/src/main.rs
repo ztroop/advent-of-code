@@ -52,6 +52,5 @@ fn main() {
         }
     }
 
-    println!("{:?}", report);
-    println!("{:?}", report.get_power_level())
+    println!("The answer is: {}", report.get_power_level())
 }
