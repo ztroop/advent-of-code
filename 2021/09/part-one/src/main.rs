@@ -55,6 +55,7 @@ impl HeightMap {
         if value < *neighbours.iter().min().unwrap() {
             return true;
         }
+
         false
     }
 }
