@@ -11,18 +11,25 @@ where
     Ok(io::BufReader::new(file).lines())
 }
 
-fn score(s: char) -> usize {
-    match s {
-        '(' | ')' => 3,
-        '[' | ']' => 57,
-        '{' | '}' => 1197,
-        '<' | '>' => 25137,
-        _ => 0,
+fn score(s: Vec<char>) -> usize {
+    let mut total: usize = 0;
+    for c in s {
+        let score: usize = match c {
+            ')' => 1,
+            ']' => 2,
+            '}' => 3,
+            '>' => 4,
+            _ => 0,
+        };
+        total = (total * 5) + score
     }
+    total
 }
 
-fn brackets(chars: Chars) -> Option<char> {
+fn brackets(chars: Chars) -> Option<Vec<char>> {
     let mut stack: Vec<char> = Vec::new();
+    let mut missing_chars: Vec<char> = Vec::new();
+
     for c in chars {
         let s = c.to_string();
         if s.is_empty() {
@@ -47,20 +54,37 @@ fn brackets(chars: Chars) -> Option<char> {
             {
                 stack.pop();
             } else {
-                return Some(c);
+                return None;
             }
         }
     }
-    None
+
+    if stack.is_empty() {
+        return None;
+    }
+
+    for i in stack.iter().rev() {
+        let missing_char = match i {
+            '(' => ')',
+            '[' => ']',
+            '{' => '}',
+            '<' => '>',
+            _ => unreachable!(),
+        };
+        missing_chars.push(missing_char)
+    }
+    Some(missing_chars)
 }
 
 fn main() {
     if let Ok(lines) = read_lines("./input") {
-        let the_score: usize = lines
+        let mut the_scores: Vec<usize> = lines
             .flatten()
             .filter_map(|x| brackets(x.chars()))
             .map(score)
-            .sum();
-        println!("The answer is: {:?}", the_score)
+            .collect();
+        the_scores.sort_unstable();
+        let middle_value = the_scores[the_scores.len() / 2 | 0];
+        println!("The answer is: {:?}", middle_value)
     }
 }
