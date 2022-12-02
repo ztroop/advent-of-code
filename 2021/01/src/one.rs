@@ -10,11 +10,11 @@ where
     Ok(io::BufReader::new(file).lines())
 }
 
-fn main() {
+pub fn answer() -> u32 {
     let mut last_measurement: u32 = 0;
     let mut counter: u32 = 0;
 
-    if let Ok(lines) = read_lines("./input") {
+    if let Ok(lines) = read_lines("./input.file") {
         for line in lines.flatten() {
             let measurement = line.trim().parse::<u32>().unwrap();
             if last_measurement != 0 && measurement > last_measurement {
@@ -24,5 +24,5 @@ fn main() {
         }
     }
 
-    println!("The answer is: {}", counter)
+    counter
 }

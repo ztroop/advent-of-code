@@ -1,7 +1,7 @@
 use std::fs;
 
-fn main() {
-    let input = fs::read_to_string("./input").unwrap();
+pub fn answer() -> u32 {
+    let input = fs::read_to_string("./input.file").unwrap();
 
     let mut sliding_window: Vec<u32> = Vec::new();
     let mut counter: u32 = 0;
@@ -23,5 +23,5 @@ fn main() {
         }
     }
 
-    println!("The answer is: {}", counter)
+    counter
 }

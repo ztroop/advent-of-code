@@ -13,45 +13,46 @@ where
 
 #[derive(Debug)]
 struct Submarine {
-    forward: u32,
-    up: u32,
-    down: u32,
+    horizonal_position: usize,
+    depth: usize,
+    aim: usize,
 }
 
 impl Submarine {
     fn new() -> Submarine {
         Submarine {
-            forward: 0,
-            up: 0,
-            down: 0,
+            horizonal_position: 0,
+            depth: 0,
+            aim: 0,
         }
     }
 
-    fn move_forward(&mut self, x: u32) {
-        self.forward += x
+    fn move_forward(&mut self, x: usize) {
+        self.horizonal_position += x;
+        self.depth += self.aim * x;
     }
 
-    fn move_up(&mut self, x: u32) {
-        self.up += x
+    fn move_up(&mut self, x: usize) {
+        self.aim -= x
     }
 
-    fn move_down(&mut self, x: u32) {
-        self.down += x
+    fn move_down(&mut self, x: usize) {
+        self.aim += x
     }
 
-    fn get_position(&self) -> u32 {
-        self.forward * (self.down - self.up)
+    fn get_position(self) -> usize {
+        self.horizonal_position * self.depth
     }
 }
 
-fn main() {
+pub fn answer() -> usize {
     let mut submarine = Submarine::new();
 
-    if let Ok(lines) = read_lines("./input") {
+    if let Ok(lines) = read_lines("./input.file") {
         for line in lines.flatten() {
             let mut item = line.split_whitespace();
             let direction = item.next().unwrap().trim();
-            let distance = item.next().unwrap().trim().parse::<u32>().unwrap();
+            let distance = item.next().unwrap().trim().parse::<usize>().unwrap();
 
             match direction {
                 "forward" => submarine.move_forward(distance),
@@ -62,5 +63,5 @@ fn main() {
         }
     }
 
-    println!("The answer is: {}", submarine.get_position())
+    submarine.get_position()
 }
