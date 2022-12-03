@@ -1,8 +1,24 @@
 use crate::enums::{Outcome, Shape};
 
-pub fn round_score(round: Vec<(Shape, Outcome)>) -> usize {
-    let opponent = round[0].0;
-    let protagonist = round[1].0;
+pub fn letter_to_enums(letters: (&str, &str)) -> (Shape, Shape) {
+    let opponent = match letters.0 {
+        "A" => Shape::Rock,
+        "B" => Shape::Paper,
+        "C" => Shape::Scissors,
+        _ => panic!("Unexpected letters: {}", letters.0),
+    };
+    let protagonist = match letters.1 {
+        "X" => Shape::Rock,
+        "Y" => Shape::Paper,
+        "Z" => Shape::Scissors,
+        _ => panic!("Unexpected letters: {}", letters.1),
+    };
+    (opponent, protagonist)
+}
+
+pub fn round_score(round: (Shape, Shape)) -> usize {
+    let opponent = round.0;
+    let protagonist = round.1;
 
     let score = match opponent {
         Shape::Rock => {
